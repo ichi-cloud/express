@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>最寄り駅リスト</title>
+	<%# css %>
+	<link rel="stylesheet" href="./style.css">
+
+	<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p&display=swap" rel="stylesheet">
+	<%# jQuery %>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/f387fddffd.js" crossorigin="anonymous"></script>
+<%# ファビコン %>
+	<link rel="shortcut icon" href="favicon.ico">
+
+</head>
+<body>
+	<div class="container-fluid">
+		<h2　class="text-center my-5"><%= @x %>,<%= @y %>の最寄駅</h2>
+
+		<div class="row d-flex justify-content-center">
+			<% @stations.each do |station| %>
+				<div class="card col-lg-2 m-1 station" data-toggle="modal" data-target="#modal" id="a">
+					<div class="card-body">
+						<p class="line text-center my-1" id="b"><%= station["line"] %></p>
+						<i class="fas fa-subway text-center my-1"></i>
+						<p class="name text-center my-1" id="c"><%= station["name"] %></p>
+					</div>
+				</div>
+			<% end %>
+		</div>
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="detail" aria-hidden="true">
+			<div class="modal-dialog model-dialog-centered" role="document">
+				<div id="detail" class="modal-content">
+				  <div class="modal-header text-center">
+						<h2>次の駅</h2>
+						<button type="button" class="close" data-dismiss="modal" aria-lable="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body text-center next"></div>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<script>
+	window.onload=function(){
+		$(".station").click(function(){
+			var line = $(".line",this).text();
+			var name = $(".name",this).text();
+			$.ajax( "/api/station", {
+				type: "GET",
+				data: {"line": line, "name":name},
+				datatype: 'json'
+			})
+			.done(function(json) {
+				$("#detail .next").text(json["next"])
+			});
+		});
+	}
+	</script>
+</body>
+</html>
