@@ -39,15 +39,16 @@
           <a href="http://localhost:32785/list?x=<%= history.x %>&y=<%= history.y %>"><%= history.x %>, <%= history.y %></a>
           <div class="d-flex flex-row-reverse text muted">
             <% if history.favorite %>
-              <form action="<% history.id %>/update" method="post">
+            <% puts history.id %>
+              <form action="/<%= history.id %>/update" method="post">
                 <button type="submit" value="解除"><i class="fas fa-heart heart"></i></button>
               </form>
             <% else %>
-              <form action="<% history.id %>/update" method="post">
+              <form action="/<%= history.id %>/update" method="post">
                 <button type="submit" value="お気に入り"><i class="fas fa-heart heart"></i></button>
               </form>
             <% end %>
-            <form action="<% history.id %>/delete" method="post">
+            <form action="/<%= history.id %>/delete" method="post">
               <button type="submit"><i class="far fa-trash-alt text-muted"></i></button>
             </form>
           </div>
